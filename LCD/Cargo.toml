@@ -52,7 +52,7 @@ pio-proc = { git = "https://github.com/rp-rs/pio-rs", rev = "fa586448b0b223217ee
 pio = { git = "https://github.com/rp-rs/pio-rs", rev = "fa586448b0b223217eec8c92c19fe6823dd04cc4" }
 rand = { version = "0.8.5", default-features = false }
 embedded-sdmmc = "0.7.0"
-hd44780-driver = "0.4.0"
+lcd_driver = {path = "lcd_driver/"}
 
 [profile.release]
 debug = 2
@@ -63,3 +63,6 @@ opt-level = 'z'
 debug = 2
 lto = true
 opt-level = "z"
+
+[workspace]
+members = ["lcd_driver"]

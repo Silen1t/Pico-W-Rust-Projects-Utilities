@@ -1,3 +1,4 @@
+#![no_std]
 use embassy_rp::gpio::{ Input, Output, AnyPin, Level, Pull };
 use embassy_time::{ Duration, Timer };
 
@@ -8,7 +9,7 @@ pub struct Keypad<'a, const ROWS: usize, const COLS: usize> {
 
 impl<'a, const ROWS: usize, const COLS: usize> Keypad<'a, ROWS, COLS> {
     pub fn new(row_pins: [AnyPin; ROWS], col_pins: [AnyPin; COLS]) -> Self {
-        let mut rows = row_pins.map(|pin| Output::new(pin, Level::High));
+        let rows = row_pins.map(|pin| Output::new(pin, Level::High));
         let cols = col_pins.map(|pin| Input::new(pin, Pull::Up));
 
         Self { rows, cols }
@@ -20,7 +21,7 @@ impl<'a, const ROWS: usize, const COLS: usize> Keypad<'a, ROWS, COLS> {
             let row = &mut self.rows[row_idx];
 
             row.set_low();
-            Timer::after(Duration::from_micros(10)).await;
+            Timer::after(Duration::from_millis(20)).await;
 
             for (col_idx, col) in self.cols.iter().enumerate() {
                 if col.is_low() {
@@ -33,14 +34,15 @@ impl<'a, const ROWS: usize, const COLS: usize> Keypad<'a, ROWS, COLS> {
         }
         None
     }
+
     #[inline]
     fn map_key(row: usize, col: usize) -> char {
         // Define the keypad layout
         const KEYMAP: [[char; 4]; 4] = [
-            ['D', 'C', 'B', 'A'], // Physical row 1
-            ['#', '9', '6', '3'], // Physical row 2
-            ['0', '8', '5', '2'], // Physical row 3
-            ['*', '7', '4', '1'], // Physical row 4
+            ['D', 'C', 'B', 'A'],
+            ['#', '9', '6', '3'],
+            ['0', '8', '5', '2'],
+            ['*', '7', '4', '1'],
         ];
         KEYMAP[row][col]
     }

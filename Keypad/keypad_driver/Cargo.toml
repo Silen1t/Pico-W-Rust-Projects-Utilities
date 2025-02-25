@@ -1,0 +1,11 @@
+[package]
+name = "keypad_driver"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+embassy-time = { version = "0.4.0", features = ["defmt", "defmt-timestamp-uptime"] }
+embassy-rp = { version = "0.3.0", features = ["defmt", "unstable-pac", "time-driver", "critical-section-impl", "rp2040"] }
+
+[lib]
+path = "src/keypad.rs"

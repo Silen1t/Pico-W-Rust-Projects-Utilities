@@ -1,9 +1,8 @@
 #![no_std]
 #![no_main]
 
-mod lcd;
 use embassy_rp::Peripherals;
-use lcd::Lcd;
+use lcd_driver::Lcd;
 use ::{ defmt_rtt as _, panic_probe as _ };
 
 
@@ -11,9 +10,9 @@ use ::{ defmt_rtt as _, panic_probe as _ };
 async fn main(_task_spawner: embassy_executor::Spawner) {
     let p: Peripherals = embassy_rp::init(Default::default());
 
-    // Define LED pin
+    // Define LCD pin
     let mut lcd = Lcd::new(p.I2C0, p.PIN_21, p.PIN_20).await;
-    lcd.display_text("Hello World", 0, true).await.unwrap();
+    lcd.display_text("Hello World!", true).await.unwrap();
 
     loop {
 

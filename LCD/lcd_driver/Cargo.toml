@@ -1,0 +1,18 @@
+[package]
+name = "lcd_driver"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+hd44780-driver = "0.4.0"
+embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+embassy-time = { version = "0.4.0", features = ["defmt", "defmt-timestamp-uptime"] }
+embassy-rp = { version = "0.3.0", features = ["defmt", "unstable-pac", "time-driver", "critical-section-impl",  "rp2040"] }
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+defmt = "0.3"
+embedded-hal-bus = { version = "0.1", features = ["async"] }
+embedded-graphics = "0.8.1"
+defmt-rtt = "0.4"
+
+[lib]
+path = "src/lcd.rs"
