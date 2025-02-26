@@ -6,6 +6,8 @@ use embassy_rp::{ bind_interrupts, i2c::{ self, Async, Config, I2c }, peripheral
 use embassy_time::Delay;
 use embedded_hal_1::delay::DelayNs;
 use hd44780_driver::{ bus::I2CBus, error::Error, Cursor, CursorBlink, Direction, Display, HD44780 };
+use itoa::Buffer; // For integers
+use ryu::Buffer as FloatBuffer; // For floats
 use ::{ defmt_rtt as _, panic_probe as _ };
 
 #[derive(Debug, Clone, Copy)]
@@ -128,6 +130,22 @@ impl Lcd {
             self.clear_display().await?;
         }
         self.driver.write_char(char, &mut self.delay).map_err(|e| (LcdError::WriteError, e))
+    }
+
+    pub async fn display_int<T: itoa::Integer>(&mut self, num: T, clear_display: bool) -> Result<(), (LcdError, Error)> {
+        let mut buffer = Buffer::new();
+        if clear_display {
+            self.clear_display().await?;
+        }
+        self.driver.write_str(buffer.format(num), &mut self.delay).map_err(|e| (LcdError::WriteError, e))
+    }
+
+    pub async fn display_float<T: ryu::Float>(&mut self, num: T, clear_display: bool) -> Result<(), (LcdError, Error)>  {
+        let mut buffer = FloatBuffer::new();
+        if clear_display {
+            self.clear_display().await?;
+        }
+        self.driver.write_str(buffer.format(num), &mut self.delay).map_err(|e| (LcdError::WriteError, e))
     }
 
     pub async fn clear_display(&mut self) -> Result<(), (LcdError, Error)> {
