@@ -1,0 +1,12 @@
+[package]
+name = "tactbutton"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+embassy-rp = { version = "0.3.0", features = ["defmt", "unstable-pac", "time-driver", "critical-section-impl", "rp2040"] }
+defmt-rtt = "0.4"
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+
+[lib]
+path = "src/tactbutton.rs"
