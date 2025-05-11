@@ -1,17 +1,19 @@
 #![no_std]
 #![no_main]
 
-// use defmt::*;
 use embassy_executor::Spawner;
 use embassy_rp::gpio::{ AnyPin, Level, Output };
-use embassy_time::{Duration, Timer};
+use embassy_time::{ Duration, Timer };
 use ::{ defmt_rtt as _, panic_probe as _ };
-use lcd_driver::{CursorMoveDirection, Lcd};
+use lcd_driver::{ CursorMoveDirection, Lcd };
 use keypad_driver::Keypad;
-const TRY_AGAIN_TEXT:&str = "Try Again 'C'";
+
+const TRY_AGAIN_TEXT: &str = "Try Again 'C'";
+
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     let p = embassy_rp::init(Default::default());
+    
     // Init LEDs
     let mut red_light = Output::new(p.PIN_14, Level::Low);
     let mut green_light = Output::new(p.PIN_15, Level::Low);
